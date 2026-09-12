@@ -1,0 +1,506 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    font-family:
+            Inter,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+    color: #776e65;
+    background: #faf8ef;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+button {
+    font: inherit;
+}
+
+.game {
+    width: min(100%, 520px);
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+}
+
+.game-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 100px;
+}
+
+.game-header h1 {
+    margin: 0;
+    color: #776e65;
+    font-size: 72px;
+    line-height: 0.9;
+    font-weight: 800;
+    letter-spacing: -4px;
+}
+
+.subtitle {
+    margin: 12px 0 0;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #776e65;
+}
+
+.score-container {
+    min-width: 90px;
+    padding: 10px 18px;
+    border-radius: 6px;
+    background: #bbada0;
+    color: #f9f6f2;
+    text-align: center;
+}
+
+.score-container span {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.score-container strong {
+    display: block;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.game-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 24px 0 16px;
+}
+
+.game-actions p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.new-game-button,
+.overlay-button {
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 16px;
+    background: #8f7a66;
+    color: #f9f6f2;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+            background 0.15s ease,
+            transform 0.15s ease;
+}
+
+.new-game-button:hover,
+.overlay-button:hover {
+    background: #776653;
+}
+
+.new-game-button:active,
+.overlay-button:active {
+    transform: scale(0.96);
+}
+
+.board {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: #bbada0;
+    overflow: hidden;
+}
+
+.board-cells {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 12px;
+    padding: 12px;
+}
+
+.board-cell {
+    min-width: 0;
+    min-height: 0;
+    border-radius: 6px;
+    background: #cdc1b4;
+}
+
+.tile-layer {
+    position: absolute;
+    inset: 12px;
+    --gap: 12px;
+    --tile-size: calc((100% - 36px) / 4);
+    pointer-events: none;
+}
+
+.tile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #eee4da;
+    color: #776e65;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+    user-select: none;
+    transition:
+            left 0.14s ease-out,
+            top 0.14s ease-out;
+    will-change: left, top, transform;
+}
+
+.tile-row-0 {
+    top: 0;
+}
+
+.tile-row-1 {
+    top: calc(var(--tile-size) + var(--gap));
+}
+
+.tile-row-2 {
+    top: calc(
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap)
+    );
+}
+
+.tile-row-3 {
+    top: calc(
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap)
+    );
+}
+
+.tile-col-0 {
+    left: 0;
+}
+
+.tile-col-1 {
+    left: calc(var(--tile-size) + var(--gap));
+}
+
+.tile-col-2 {
+    left: calc(
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap)
+    );
+}
+
+.tile-col-3 {
+    left: calc(
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap) +
+            var(--tile-size) +
+            var(--gap)
+    );
+}
+
+.tile-2 {
+    background: #eee4da;
+    color: #776e65;
+}
+
+.tile-4 {
+    background: #ede0c8;
+    color: #776e65;
+}
+
+.tile-8 {
+    background: #f2b179;
+    color: #f9f6f2;
+}
+
+.tile-16 {
+    background: #f59563;
+    color: #f9f6f2;
+}
+
+.tile-32 {
+    background: #f67c5f;
+    color: #f9f6f2;
+}
+
+.tile-64 {
+    background: #f65e3b;
+    color: #f9f6f2;
+}
+
+.tile-128 {
+    background: #edcf72;
+    color: #f9f6f2;
+    font-size: 36px;
+}
+
+.tile-256 {
+    background: #edcc61;
+    color: #f9f6f2;
+    font-size: 36px;
+}
+
+.tile-512 {
+    background: #edc850;
+    color: #f9f6f2;
+    font-size: 36px;
+}
+
+.tile-1024 {
+    background: #edc53f;
+    color: #f9f6f2;
+    font-size: 30px;
+}
+
+.tile-2048 {
+    background: #edc22e;
+    color: #f9f6f2;
+    font-size: 30px;
+}
+
+.tile-new {
+    animation: tile-new 0.18s ease-out;
+}
+
+.tile-merge {
+    z-index: 2;
+    animation: tile-merge 0.18s ease-out;
+}
+
+@keyframes tile-new {
+    0% {
+        transform: scale(0);
+    }
+
+    70% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes tile-merge {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgb(238 228 218 / 73%);
+}
+
+.game-overlay-content {
+    width: min(100%, 320px);
+    padding: 28px 24px;
+    border-radius: 8px;
+    background: rgb(250 248 239 / 96%);
+    text-align: center;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 12%);
+}
+
+.game-overlay-content h2 {
+    margin: 0 0 12px;
+    color: #776e65;
+    font-size: 28px;
+}
+
+.game-overlay-content p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.overlay-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.overlay-button.secondary {
+    background: #bbada0;
+}
+
+.overlay-button.secondary:hover {
+    background: #a89a8d;
+}
+
+.instructions {
+    margin-top: 32px;
+}
+
+.instructions h2 {
+    margin: 0 0 12px;
+    color: #776e65;
+    font-size: 22px;
+}
+
+.instructions p {
+    margin: 0 0 10px;
+    color: #776e65;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.instructions strong {
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .game {
+        padding: 24px 12px 36px;
+    }
+
+    .game-header h1 {
+        font-size: 60px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .score-container {
+        min-width: 78px;
+        padding: 8px 12px;
+    }
+
+    .score-container strong {
+        font-size: 20px;
+    }
+
+    .game-actions {
+        align-items: flex-start;
+    }
+
+    .game-actions p {
+        max-width: 220px;
+    }
+
+    .new-game-button {
+        flex-shrink: 0;
+    }
+
+    .board-cells {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .tile-layer {
+        inset: 8px;
+        --gap: 8px;
+        --tile-size: calc((100% - 24px) / 4);
+    }
+
+    .tile {
+        border-radius: 5px;
+        font-size: 32px;
+    }
+
+    .tile-128,
+    .tile-256,
+    .tile-512 {
+        font-size: 28px;
+    }
+
+    .tile-1024,
+    .tile-2048 {
+        font-size: 23px;
+    }
+
+    .instructions {
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+    .game-header {
+        gap: 10px;
+    }
+
+    .game-header h1 {
+        font-size: 52px;
+    }
+
+    .score-container {
+        min-width: 70px;
+        padding: 7px 10px;
+    }
+
+    .game-actions {
+        gap: 10px;
+    }
+
+    .game-actions p {
+        font-size: 12px;
+    }
+
+    .new-game-button {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .tile {
+        font-size: 27px;
+    }
+
+    .tile-128,
+    .tile-256,
+    .tile-512 {
+        font-size: 23px;
+    }
+
+    .tile-1024,
+    .tile-2048 {
+        font-size: 19px;
+    }
+}
